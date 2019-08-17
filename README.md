@@ -12,3 +12,6 @@ The next step is to query network usage by process and make this project a dll c
 To get the network usage information by process, there's no default windows PerformanceCounter provided by windows,
 but it's possible. We need to query IPV4/IPV6 Table statistics, and filter by UDP/TCP protocol statistics and sum 
 all traffic information for each entry (connection by pid/port traffic statistic).
+
+This project has neither optimized code, nor standarized and well structured code. I've done this in 3 hours! =). 
+Please, forgive me!
