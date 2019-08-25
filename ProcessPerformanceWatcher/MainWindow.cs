@@ -85,17 +85,19 @@ namespace ProcessPerformanceWatcher {
             }
 
             if ((_update_count & 3) == 0) {
-                processes = Process.GetProcesses();
-                Array.Sort(
-                    processes,
-                    new Comparison<Process>(
-                        (p1, p2) => p1.ProcessName.CompareTo(p2.ProcessName)));
-                if (_update_count == 0) {
-                    foreach (var proc in processes) {
-                        pid_combo_box.Items.Add(proc.Id);
+                this.Invoke(new Action(() => {
+                    processes = Process.GetProcesses();
+                    Array.Sort(
+                        processes,
+                        new Comparison<Process>(
+                            (p1, p2) => p1.ProcessName.CompareTo(p2.ProcessName)));
+                    if (_update_count == 0) {
+                        foreach (var proc in processes) {
+                            pid_combo_box.Items.Add(proc.Id);
+                        }
+                        pid_combo_box.SelectedItem = pid_combo_box.Items[0];
                     }
-                    pid_combo_box.SelectedItem = pid_combo_box.Items[0];
-                }
+                }));
             }
             _update_count++;
         }
@@ -116,18 +118,20 @@ namespace ProcessPerformanceWatcher {
 
         private void Process_instance_KeyUp(object sender, KeyEventArgs e) {
             if (process_instance.Text != "" && processes.Length > 0) {
-                Process[] processes_by_name =
+                this.Invoke(new Action(() => {
+                    Process[] processes_by_name =
                     Array.FindAll(
                         processes,
                         new Predicate<Process>(
                             (p) => p.ProcessName.StartsWith(process_instance.Text)));
-                pid_combo_box.Items.Clear();
-                if (processes_by_name.Length > 0) {
-                    foreach (var proc in processes_by_name) {
-                        pid_combo_box.Items.Add(proc.Id);
+                    pid_combo_box.Items.Clear();
+                    if (processes_by_name.Length > 0) {
+                        foreach (var proc in processes_by_name) {
+                            pid_combo_box.Items.Add(proc.Id);
+                        }
+                        pid_combo_box.SelectedItem = pid_combo_box.Items[0];
                     }
-                    pid_combo_box.SelectedItem = pid_combo_box.Items[0];
-                }
+                }));
             }
         }
 
