@@ -5,13 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading;
+using ProcessPerformanceWatcher;
 
 namespace ProcessPerformanceWatcher {
-    class ProcessWatcher
-    {
-        private String instance_name;
+    public class ProcessWatcher {
+        private String _instance_name;
         private String _network_adapter;
-        private long _pid;
+        private long   _pid;
 
         public MovingAverage[] values { get; private set; } =
             new MovingAverage[20] {
@@ -32,7 +32,7 @@ namespace ProcessPerformanceWatcher {
         public bool IsAlive => _thread.IsAlive;
 
         public ProcessWatcher(String process_name, String network_adapter) {
-            instance_name = process_name;
+            _instance_name = process_name;
             if (network_adapter == null || network_adapter == "") {
                 throw new Exception("Network adapter invalid");
             }
@@ -53,44 +53,43 @@ namespace ProcessPerformanceWatcher {
             is_running = true;
             try {
                 var counters = new List<PerformanceCounter> {
-                    new PerformanceCounter("Process","IO Read Operations/sec", instance_name, true),
-                    new PerformanceCounter("Process", "IO Write Operations/sec", instance_name, true),
-                    new PerformanceCounter("Process", "IO Data Operations/sec", instance_name, true),
-                    new PerformanceCounter("Process", "IO Read Bytes/sec", instance_name, true),
-                    new PerformanceCounter("Process", "IO Write Bytes/sec", instance_name, true),
-                    new PerformanceCounter("Process", "IO Data Bytes/sec", instance_name, true),
-                    new PerformanceCounter("Network Interface", "Bytes Sent/sec", _network_adapter, true),
-                    new PerformanceCounter("Network Interface", "Bytes Received/sec", _network_adapter, true),
+                    new PerformanceCounter("Process",           "IO Read Operations/sec",  _instance_name,   true),
+                    new PerformanceCounter("Process",           "IO Write Operations/sec", _instance_name,   true),
+                    new PerformanceCounter("Process",           "IO Data Operations/sec",  _instance_name,   true),
+                    new PerformanceCounter("Process",           "IO Read Bytes/sec",       _instance_name,   true),
+                    new PerformanceCounter("Process",           "IO Write Bytes/sec",      _instance_name,   true),
+                    new PerformanceCounter("Process",           "IO Data Bytes/sec",       _instance_name,   true),
+                    new PerformanceCounter("Network Interface", "Bytes Sent/sec",          _network_adapter, true),
+                    new PerformanceCounter("Network Interface", "Bytes Received/sec",      _network_adapter, true),
                 };
-                NetworkPerformanceData data;
                 reporter.Initialise();
                 while (is_running) {
                     for (var ii = 0; ii < counters.Count; ii++) {
                         values[ii].add_sample(counters[ii].NextValue());
                     }
-                    data = reporter.GetNetworkPerformanceData();
-                    values[counters.Count]  .add_sample(data.BytesSent);
-                    values[counters.Count+1].add_sample(data.BytesReceived);
+                    var data = reporter.GetNetworkPerformanceData();
+                    values[counters.Count]  .add_sample(data[0].BytesSent);
+                    values[counters.Count+1].add_sample(data[0].BytesReceived);
+                    values[counters.Count]  .add_sample(data[0].TotalBytesSent);
+                    values[counters.Count+1].add_sample(data[0].TotalBytesReceived);
+                    values[counters.Count+2].add_sample(data[1].BytesSent);
+                    values[counters.Count+3].add_sample(data[1].BytesReceived);
+                    values[counters.Count+2].add_sample(data[1].TotalBytesSent);
+                    values[counters.Count+3].add_sample(data[1].TotalBytesReceived);
                 }
             }
             catch (Exception ex) {
-                Console.Error.WriteLine( "Error on instance: " + instance_name + "Error:" + ex.Message);
+                Console.Error.WriteLine( "Error on instance: " + _instance_name + "Error:" + ex.Message);
                 Console.Error.WriteLine(ex.StackTrace);
-                //bool exists = PerformanceCounterCategory.CounterExists("Processo", "Bytes de leitura de E/S/s");
             }
         }
 
-        public static string PerformanceCounterInstanceName(int pid)
-        {
-            Process process = System.Diagnostics.Process.GetProcessById(pid);
-            if (process != null)
-            {
-                var matchesProcessId = new Func<string, bool>(instanceName =>
-                {
-                    using (var pc = new PerformanceCounter("Process", "ID Process", instanceName, true))
-                    {
-                        if ((int)pc.RawValue == process.Id)
-                        {
+        public static string PerformanceCounterInstanceName(int pid) {
+            Process process = Process.GetProcessById(pid);
+            if (process != null) {
+                var matchesProcessId = new Func<string, bool>(instanceName => {
+                    using (var pc = new PerformanceCounter("Process", "ID Process", instanceName, true)) {
+                        if ((int)pc.RawValue == process.Id) {
                             return true;
                         }
                     }

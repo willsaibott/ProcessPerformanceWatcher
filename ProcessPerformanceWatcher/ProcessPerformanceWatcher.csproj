@@ -74,10 +74,6 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="MovingAverage.cs" />
-    <Compile Include="PerfCounterFactory.cs" />
-    <Compile Include="PerfMapper.cs" />
-    <Compile Include="ProcessNetworkWatcher.cs" />
     <Compile Include="ProcessWatcher.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,6 +115,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ok.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PerformanceWatcherLib\PerformanceWatcherLib.csproj">
+      <Project>{4c426541-e56a-4bba-acce-fa82d3a2a8f3}</Project>
+      <Name>PerformanceWatcherLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

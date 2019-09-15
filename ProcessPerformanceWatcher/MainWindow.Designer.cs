@@ -35,9 +35,6 @@ namespace ProcessPerformanceWatcher {
             this.instance_name_label = new System.Windows.Forms.Label();
             this.error_picture = new System.Windows.Forms.PictureBox();
             this.success_picture = new System.Windows.Forms.PictureBox();
-            this.process_name_radio = new System.Windows.Forms.RadioButton();
-            this.pid_radio_button = new System.Windows.Forms.RadioButton();
-            this.find_by_label = new System.Windows.Forms.Label();
             this.disk_io_panel = new System.Windows.Forms.GroupBox();
             this.data_bytes_sec_label = new System.Windows.Forms.Label();
             this.data_bytes_sec = new System.Windows.Forms.TextBox();
@@ -123,40 +120,6 @@ namespace ProcessPerformanceWatcher {
             this.success_picture.TabIndex = 7;
             this.success_picture.TabStop = false;
             this.success_picture.Visible = false;
-            // 
-            // process_name_radio
-            // 
-            this.process_name_radio.AutoSize = true;
-            this.process_name_radio.Checked = true;
-            this.process_name_radio.Location = new System.Drawing.Point(133, 71);
-            this.process_name_radio.Name = "process_name_radio";
-            this.process_name_radio.Size = new System.Drawing.Size(91, 17);
-            this.process_name_radio.TabIndex = 8;
-            this.process_name_radio.TabStop = true;
-            this.process_name_radio.Tag = "find_process_by";
-            this.process_name_radio.Text = "process name";
-            this.process_name_radio.UseVisualStyleBackColor = true;
-            this.process_name_radio.CheckedChanged += new System.EventHandler(this.on_find_by_mode_change);
-            // 
-            // pid_radio_button
-            // 
-            this.pid_radio_button.AutoSize = true;
-            this.pid_radio_button.Location = new System.Drawing.Point(245, 71);
-            this.pid_radio_button.Name = "pid_radio_button";
-            this.pid_radio_button.Size = new System.Drawing.Size(83, 17);
-            this.pid_radio_button.TabIndex = 9;
-            this.pid_radio_button.Tag = "find_process_by";
-            this.pid_radio_button.Text = "process PID";
-            this.pid_radio_button.UseVisualStyleBackColor = true;
-            // 
-            // find_by_label
-            // 
-            this.find_by_label.AutoSize = true;
-            this.find_by_label.Location = new System.Drawing.Point(40, 71);
-            this.find_by_label.Name = "find_by_label";
-            this.find_by_label.Size = new System.Drawing.Size(44, 13);
-            this.find_by_label.TabIndex = 10;
-            this.find_by_label.Text = "Find by:";
             // 
             // disk_io_panel
             // 
@@ -419,7 +382,7 @@ namespace ProcessPerformanceWatcher {
             "MiBps",
             "Gbps",
             "GiBps"});
-            this.unit_combo_box.Location = new System.Drawing.Point(133, 99);
+            this.unit_combo_box.Location = new System.Drawing.Point(133, 71);
             this.unit_combo_box.Name = "unit_combo_box";
             this.unit_combo_box.Size = new System.Drawing.Size(70, 21);
             this.unit_combo_box.TabIndex = 18;
@@ -427,7 +390,7 @@ namespace ProcessPerformanceWatcher {
             // bytes_unit_label
             // 
             this.bytes_unit_label.AutoSize = true;
-            this.bytes_unit_label.Location = new System.Drawing.Point(40, 102);
+            this.bytes_unit_label.Location = new System.Drawing.Point(40, 74);
             this.bytes_unit_label.Name = "bytes_unit_label";
             this.bytes_unit_label.Size = new System.Drawing.Size(29, 13);
             this.bytes_unit_label.TabIndex = 17;
@@ -454,9 +417,6 @@ namespace ProcessPerformanceWatcher {
             this.Controls.Add(this.network_adapter_label);
             this.Controls.Add(this.network_io_panel);
             this.Controls.Add(this.disk_io_panel);
-            this.Controls.Add(this.find_by_label);
-            this.Controls.Add(this.pid_radio_button);
-            this.Controls.Add(this.process_name_radio);
             this.Controls.Add(this.success_picture);
             this.Controls.Add(this.error_picture);
             this.Controls.Add(this.instance_name_label);
@@ -484,9 +444,6 @@ namespace ProcessPerformanceWatcher {
         private System.Windows.Forms.Label instance_name_label;
         private System.Windows.Forms.PictureBox error_picture;
         private System.Windows.Forms.PictureBox success_picture;
-        private System.Windows.Forms.RadioButton process_name_radio;
-        private System.Windows.Forms.RadioButton pid_radio_button;
-        private System.Windows.Forms.Label find_by_label;
         private System.Windows.Forms.GroupBox disk_io_panel;
         private System.Windows.Forms.Label write_bytes_sec_label;
         private System.Windows.Forms.TextBox write_bytes_sec;
@@ -509,9 +466,6 @@ namespace ProcessPerformanceWatcher {
         private System.Windows.Forms.TextBox total_bytes_received;
         private System.Windows.Forms.Label total_bytes_sent_label;
         private System.Windows.Forms.TextBox total_bytes_sent;
-        private System.Diagnostics.PerformanceCounter io_disk_perf_write;
-        private System.Diagnostics.PerformanceCounter net_io_bytes_sent;
-        private System.Diagnostics.PerformanceCounter net_io_bytes_recv;
         private System.Windows.Forms.Label network_adapter_label;
         private System.Windows.Forms.ComboBox network_adapter_combo_box;
         private ComboBox unit_combo_box;

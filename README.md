@@ -10,13 +10,14 @@ To get the network usage information by process, there's no default windows Perf
 but it's possible. We need to query IPV4/IPV6 Table statistics, and filter by UDP/TCP protocol statistics and sum 
 all traffic information for each entry (connection by pid/port traffic statistic).
 
-This project has neither optimized code, nor standarized and well structured code. I've spent now 5 hours! =). 
+This project has neither optimized code, nor standarized and well structured code. I've spent now 7 hours! =). 
 Please, forgive me!
 
-I'm planning to transform this in a solution with 3 projects: 
+I'm planning to transform this in a solution with 4 projects: 
 1. Library
 2. Application code that uses the library
-3. Test Project
+3. Rest API Service that monitores IO activity and a specific PID traffic
+4. Test Project
 
 I'll come back to this project as soon as I can make the same thing in pure C++.
 
@@ -24,3 +25,6 @@ New Features:
 
 1. I'm able to get network information by process/pid now, But this is information is only filtered by PID,
 it means that it's not, currently, filtered by network interface or connection port yet.
+
+2. I've split the project in Library and application code. Next Step: Creates a Rest API service that provides me 
+the IO activity I'm interested in.

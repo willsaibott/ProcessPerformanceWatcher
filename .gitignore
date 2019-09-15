@@ -1,3 +1,5 @@
 .vs*
 ProcessPerformanceWatcher/bin/*
 ProcessPerformanceWatcher/obj/*
+PerformanceWatcherLib/bin/*
+PerformanceWatcherLib/obj/*

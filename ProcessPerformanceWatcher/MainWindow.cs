@@ -11,7 +11,6 @@ namespace ProcessPerformanceWatcher {
     {
         enum FindByMode { Name, PID };
         private ProcessWatcher _perf_watcher = null;
-        private FindByMode _mode = FindByMode.Name;
         System.Timers.Timer timer;
         bool _is_running = false;
         Process[] processes;
@@ -79,8 +78,11 @@ namespace ProcessPerformanceWatcher {
                     data_bytes_sec.Text         = (unit_converter[idx] * _perf_watcher.values[5].Average).ToString("0.## ") + units[idx];
                     total_bytes_sent.Text       = (unit_converter[idx] * _perf_watcher.values[6].Average).ToString("0.## ") + units[idx];
                     total_bytes_received.Text   = (unit_converter[idx] * _perf_watcher.values[7].Average).ToString("0.## ") + units[idx];
-                    process_bytes_sent.Text     = (unit_converter[idx] * _perf_watcher.values[8].Average).ToString("0.## ") + units[idx];
-                    process_bytes_received.Text = (unit_converter[idx] * _perf_watcher.values[9].Average).ToString("0.## ") + units[idx];
+                    // TDP + UDP data
+                    process_bytes_sent.Text     = (unit_converter[idx] * _perf_watcher.values[8].Average + 
+                                                   unit_converter[idx] * _perf_watcher.values[12].Average).ToString("0.## ") + units[idx];
+                    process_bytes_received.Text = (unit_converter[idx] * _perf_watcher.values[9].Average +
+                                                   unit_converter[idx] * _perf_watcher.values[13].Average).ToString("0.## ") + units[idx];
                 }));
             }
 
@@ -105,15 +107,6 @@ namespace ProcessPerformanceWatcher {
         private void start_button_click(object sender, EventArgs e) {
             _is_running = true;
             StartMonitoring();
-        }
-
-        private void on_find_by_mode_change(object sender, EventArgs e) {
-            if (process_name_radio.Checked) {
-                _mode = FindByMode.Name;
-            }
-            else if (pid_radio_button.Checked) {
-                _mode = FindByMode.PID;
-            }
         }
 
         private void Process_instance_KeyUp(object sender, KeyEventArgs e) {
